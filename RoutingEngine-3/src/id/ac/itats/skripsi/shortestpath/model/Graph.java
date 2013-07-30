@@ -9,7 +9,7 @@ import java.util.List;
 public class Graph {
 	List<Edge> edges = new LinkedList<Edge>();
 	private HashMap<Long, Vertex> vertices = new HashMap<Long, Vertex>();
-
+	
 	public void addEdge(String edgeId, long fromNode, long toNode, double weight) {
 		Vertex fromVertex = vertices.get(fromNode);
 		if (fromVertex == null) {
@@ -39,17 +39,9 @@ public class Graph {
 		return edges;
 	}
 
-	public Vertex fromVertex(String id) {
+	public Vertex getVertex(long id) {
 
 		return vertices.get(id);
 	}
 
-	public Vertex toVertex(String id) {
-		return vertices.get(id);
-	}
-
-	// princeton
-	public Iterable<Edge> adj(int v) {
-		return adj[v];
-	}
 }
