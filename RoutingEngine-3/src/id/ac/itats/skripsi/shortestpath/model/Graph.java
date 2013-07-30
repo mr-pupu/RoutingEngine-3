@@ -5,46 +5,51 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.vividsolutions.jts.geom.Point;
 
 public class Graph {
-	private HashMap<String, Vertex> vertices = new HashMap<String, Vertex>();
-	private List<Edge> edges = new LinkedList<Edge>();
+	List<Edge> edges = new LinkedList<Edge>();
+	private HashMap<Long, Vertex> vertices = new HashMap<Long, Vertex>();
 
-	public void addEdge(String edgeId, String source, Point sourcePoint, String target, Point targetPoint, double weight ) {
-		Vertex fromVertex = vertices.get(source);
+	public void addEdge(String edgeId, long fromNode, long toNode, double weight) {
+		Vertex fromVertex = vertices.get(fromNode);
 		if (fromVertex == null) {
-			fromVertex = new Vertex(source,sourcePoint);
-			vertices.put(source, fromVertex);
+			fromVertex = new Vertex(fromNode);
+			vertices.put(fromNode, fromVertex);
 		}
-		Vertex toVertex = vertices.get(target);
+		Vertex toVertex = vertices.get(toNode);
 		if (toVertex == null) {
-			toVertex = new Vertex(target, targetPoint);
-			vertices.put(target, toVertex);
+			toVertex = new Vertex(toNode);
+			vertices.put(toNode, toVertex);
 		}
 		Edge edge = new Edge(edgeId, toVertex, weight);
-		edges.add(edge);
 		fromVertex.adjacencies.add(edge);
-		
+		edges.add(edge);
 	}
 
 	public int getSize() {
-		return this.vertices.size();
+		return vertices.size();
+	}
+
+	public Collection<Vertex> getVerticeValues() {
+		return vertices.values();
+	}
+
+	public Collection<Edge> getEdges() {
+
+		return edges;
+	}
+
+	public Vertex fromVertex(String id) {
+
+		return vertices.get(id);
 	}
 
 	public Vertex toVertex(String id) {
 		return vertices.get(id);
 	}
 
-	public HashMap<String, Vertex> getVertices() {
-		return vertices;
-	}
-
-	public Collection<Vertex> getVerticesValue() {
-		return vertices.values();
-	}
-	
-	public List<Edge> getEdges() {
-		return edges;
+	// princeton
+	public Iterable<Edge> adj(int v) {
+		return adj[v];
 	}
 }

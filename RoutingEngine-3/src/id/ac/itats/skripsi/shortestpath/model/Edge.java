@@ -1,22 +1,14 @@
 package id.ac.itats.skripsi.shortestpath.model;
 
 public class Edge {
-	public final String id;
 	public final Vertex target;
 	public final double weight;
 	
-	public Edge(String argId, Vertex argTarget, double argWeight) {
-		id = argId;
-		target = argTarget;
-		weight = argWeight;
-		
-	}
+	public final String id;
 
-	@Override
-	public String toString() {
-		return "Edge [id=" + id + ", target=" + target + ", weight=" + weight
-				+ "]";
+	public Edge(String id, Vertex target, double weight) {
+		this.target = target;
+		this.weight = weight;
+		this.id = id;
 	}
-	
-	
 }
