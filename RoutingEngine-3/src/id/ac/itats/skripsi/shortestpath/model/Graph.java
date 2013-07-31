@@ -10,15 +10,15 @@ public class Graph {
 	List<Edge> edges = new LinkedList<Edge>();
 	private HashMap<Long, Vertex> vertices = new HashMap<Long, Vertex>();
 	
-	public void addEdge(String edgeId, long fromNode, long toNode, double weight) {
+	public void addEdge(String edgeId, long fromNode, String fromLat, String fromLon, long toNode, String toLat, String toLon, double weight) {
 		Vertex fromVertex = vertices.get(fromNode);
 		if (fromVertex == null) {
-			fromVertex = new Vertex(fromNode);
+			fromVertex = new Vertex(fromNode, fromLat, fromLon);
 			vertices.put(fromNode, fromVertex);
 		}
 		Vertex toVertex = vertices.get(toNode);
 		if (toVertex == null) {
-			toVertex = new Vertex(toNode);
+			toVertex = new Vertex(toNode, toLat, toLon);
 			vertices.put(toNode, toVertex);
 		}
 		Edge edge = new Edge(edgeId, toVertex, weight);

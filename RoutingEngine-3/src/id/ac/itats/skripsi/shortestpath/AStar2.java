@@ -1,7 +1,5 @@
 package id.ac.itats.skripsi.shortestpath;
 
-import id.ac.itats.skripsi.databuilder.GraphAdapter;
-import id.ac.itats.skripsi.orm.Node;
 import id.ac.itats.skripsi.shortestpath.model.Edge;
 import id.ac.itats.skripsi.shortestpath.model.Vertex;
 
@@ -10,67 +8,71 @@ import java.util.Collections;
 import java.util.List;
 import java.util.PriorityQueue;
 
-public class AStar {
+public class AStar2 {
 
-	private Vertex target;
 	private	double tLat, tLon;
 	
-	private List<Vertex> bestNode = new ArrayList<Vertex>();
-	PriorityQueue<Vertex> openList = new PriorityQueue<Vertex>(5, Vertex.CompareF);
 	
-	public AStar(Vertex source, Vertex target){
-
-		this.target = target;
-		
+	
+	public List<Vertex> computePaths(Vertex source, Vertex target) {
 		this.tLat = Double.valueOf(target.lat);
 		this.tLon = Double.valueOf(target.lon);
 		
-		computePaths(source, target);
-		
-	}
-	
-	private void computePaths(Vertex source, Vertex target) {
-	
+		PriorityQueue<Vertex> openList = new PriorityQueue<Vertex>(5, Vertex.CompareF);
 		source.minDistance = 0.;
 		source.minF = source.minDistance
 				+ calcHeuristic(source);
 
 		openList.add(source);
-		bestNode.add(source);
 		
 		while (!openList.isEmpty()) {
 			Vertex current = openList.poll();
 			current.onClosedList = true;
-		
+			
+			if(current.equals(target)){
+				return reconstructPath(current);
+			}
+			
 			// currentNeighborhood
 			for (Edge e : current.adjacencies) {
-				Vertex next = e.target;
-
-				double tentativeG = current.minDistance + e.weight;
-
-				if (next.onClosedList && tentativeG >= next.minDistance) {
+				Vertex neighbor = e.target;
+				boolean neighborIsBetter;
+				
+				if (neighbor.onClosedList) {
 					continue;
 				}
-				if (!next.onOpenList || tentativeG < next.minDistance) {
-					next.previous = current;
-					next.minDistance = tentativeG;
-					next.minF = next.minDistance + calcHeuristic(next);
-					openList.add(next);
-					next.onOpenList = true;
-				}
-
+				
+				if (!neighbor.isObstacle){
+					double tentativeG = current.minDistance + e.weight;
+					
+					if(!neighbor.onOpenList){
+						openList.add(neighbor);
+						neighbor.onOpenList = true;
+						neighborIsBetter =true;
+					} else if (tentativeG < current.minDistance){
+						neighborIsBetter = true;
+					} else {
+						neighborIsBetter =false;
+					}
+					
+					if(neighborIsBetter){
+						neighbor.previous = current;
+						neighbor.minDistance = tentativeG;
+						neighbor.minF = neighbor.minDistance + calcHeuristic(neighbor);
+					}
+				}				
 			}
 		}
+		return null;
 	}
 
 	
-	public List<Vertex> getShortestPath() {
+	private List<Vertex> reconstructPath(Vertex target) {
 		List<Vertex> path = new ArrayList<Vertex>();
 		for (Vertex vertex = target; vertex != null; vertex = vertex.previous)
 			path.add(vertex);
 
 		Collections.reverse(path);
-
 		return path;
 	}
 	

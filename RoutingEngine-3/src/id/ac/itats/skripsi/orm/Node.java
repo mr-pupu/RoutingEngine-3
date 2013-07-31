@@ -1,6 +1,11 @@
 package id.ac.itats.skripsi.orm;
 
 import java.util.List;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+
 import id.ac.itats.skripsi.orm.DaoSession;
 import de.greenrobot.dao.DaoException;
 
@@ -141,6 +146,13 @@ public class Node implements Comparable<Node>{
 	public int compareTo(Node other) {
 		return Double.compare(minDistance, other.minDistance);
 	}
+
+	 public Point getPoint() {
+        Point p = new GeometryFactory().createPoint(
+                new Coordinate(Double.valueOf(longitude), Double.valueOf(latitude)));
+
+        return p;
+    }
 	
 	
 

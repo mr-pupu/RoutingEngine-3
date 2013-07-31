@@ -8,9 +8,7 @@ import android.test.AndroidTestCase;
 public class GraphAdapterTest extends AndroidTestCase {
 	protected final String TAG = "GraphAdapterTest";
 	
-	GraphAdapter graphAdapter;
 	protected void setUp() throws Exception {
-		graphAdapter = new GraphAdapter();
 		super.setUp();
 	}
 
@@ -19,17 +17,22 @@ public class GraphAdapterTest extends AndroidTestCase {
 	}
 
 	public void testGetNode() {
-		Node n =  graphAdapter.getNode("257690928");
-		assertEquals(n.getNodeID(), Long.valueOf("257690928"));
+		Node n =  GraphAdapter.getNode(257690928);
+		assertEquals(n.getNodeID(), Long.valueOf(257690928));
 	}
 
 	public void testBuildGraph() {
-		Graph graph = graphAdapter.buildGraph();
+		Graph graph = GraphAdapter.buildGraph();
 		assertEquals(graph.getSize(), 22311);
 	}
 	
 	public void testBuildGraph2() {
-		Graph graph = graphAdapter.buildGraph2();
+		Graph graph = GraphAdapter.buildGraph2();
+		assertEquals(graph.getSize(), 22311);
+	}
+	
+	public void testBuildGraph3() {
+		Graph graph = GraphAdapter.buildGraph3();
 		assertEquals(graph.getSize(), 22311);
 	}
 
